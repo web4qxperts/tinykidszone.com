@@ -16,7 +16,7 @@ export default function Document() {
     <script src="/js/swiper.min.js"></script>
     <script src="/js/main.js"></script>
     </Head>
-      <body>
+      <body className='homePgBg'>
         <Main />
         <NextScript />
       </body>
