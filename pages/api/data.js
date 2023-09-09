@@ -6,7 +6,7 @@ export const config = {
   
   export default async function (req) {
     return new Response(
-      JSON.stringify({ name: 'John Doe' }),
+      JSON.stringify({ name: `John Doe ${req.method}` }),
       {
         status: 200,
         headers: {
