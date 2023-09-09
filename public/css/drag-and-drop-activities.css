@@ -11,13 +11,16 @@
 }
 
 
-html, body, #root, #dragDropGame, #dragDropGame .alert, .portrait, .loading, .bg-area {
+html, body, #root, #__next, #dragDropGame, #dragDropGame .alert, .portrait, .loading, .bg-area {
 	margin:0px;
 	padding:0px;
 	width:100%;
 	height:100%;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 400;	
+}
+img {
+	max-width: inherit !important;
 }
 body {
 	background: #31b7e9;	

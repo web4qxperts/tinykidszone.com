@@ -75,7 +75,7 @@ const fetchData = function(data, callback) {
 const dragDrop = function(data) {
   let $ = window.$;
   var thisObj = $("#dragDropGame");
-  var image = data.imageOver;
+  var image = `/games/drag-drop/image-over-${data.id}.png`;
   let gameType = data.type;
   
   let missed = 0;
@@ -334,8 +334,8 @@ class Game extends React.Component {
     if(data.type == 2) {
       actionClass = "action-2";
     }
-    return  <div className="bg-area" style={{backgroundImage:"url("+data.bg+")"}}>
-    <section id="dragDropGame" style={{backgroundImage:"url("+data.image+")"}}>
+    return  <div className="bg-area" style={{backgroundImage:"url(/games/drag-drop/bg-"+data.id+".png)"}}>
+    <section id="dragDropGame" style={{backgroundImage:"url(/games/drag-drop/image-"+data.id+".png)"}}>
   
      
     </section>
@@ -482,7 +482,7 @@ class App extends React.Component {
       </div>
     
     if(self.state.activeData) {
-      html = <Game data={self.state.activeData} key={self.state.id} playOthers={this.playOthers} />
+      html = <Game data={self.state.activeData.data} key={self.state.id} playOthers={this.playOthers} />
     }
      
 
