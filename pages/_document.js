@@ -9,7 +9,7 @@ export default function Document() {
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link rel="manifest" href="/manifest.json" />
     <link href="/css/swiper.min.css" rel="stylesheet" />
-    <link href="/css/main.css" rel="stylesheet" />
+   
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>    
     <script src="/js/jquery-ui.min-punch.js"></script>

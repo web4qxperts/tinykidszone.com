@@ -96,4 +96,24 @@ export default {
             })
         })
     },
+    getTapPuzzle:function() {
+        return new Promise((resolve, reject) => {
+            const data = [];
+            db.collection("tappuzzle").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const nextData = doc.data();
+                    nextData["image"] = "/games/tap-puzzle/image-"+nextData.id+".png"
+                    
+                    data.push({
+                        data:nextData,
+                        id:doc.id
+                    });
+                });
+                resolve(data)
+            }).catch(function(error){
+                reject(error);
+            })
+        })
+    },
+    
 };

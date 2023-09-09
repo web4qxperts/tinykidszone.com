@@ -1,5 +1,10 @@
+import Head from "next/head";
+
 export default function Wrapper(props) {
     return <div id="root">
+        <Head>
+        <link href="/css/main.css" rel="stylesheet" />
+        </Head>
     <header>
     <div className="logo animate__animated animate__swing animate__delay-2s"><a href="/"><img src="/images/tkz-logo.png" /></a></div>
     
