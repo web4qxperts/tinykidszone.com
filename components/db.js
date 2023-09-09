@@ -83,10 +83,13 @@ export default {
     getPuzzles:function() {
         return new Promise((resolve, reject) => {
             const data = [];
-            db.collection("puzzles").get().then((querySnapshot) => {
+            db.collection("puzzles").where("status", "==", "1").where("type", "==", "1").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
+                    const nextData = doc.data();
+                    nextData["image"] = "/games/puzzles/"+nextData.id+".png"
+                    
                     data.push({
-                        data:doc.data(),
+                        data:nextData,
                         id:doc.id
                     });
                 });
