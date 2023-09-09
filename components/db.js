@@ -31,5 +31,39 @@ export default {
                 reject(error);
             })
         })
-    }
+    },
+    getColoringActivities:function() {
+        return new Promise((resolve, reject) => {
+            const data = [];
+            db.collection("coloringactivity").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    data.push({
+                        data:doc.data(),
+                        id:doc.id
+                    });
+                });
+                resolve(data)
+            }).catch(function(error){
+                reject(error);
+            })
+        })
+    },
+    getAnimalsSounds:function() {
+        return new Promise((resolve, reject) => {
+            const data = [];
+            db.collection("animalssounds").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    data.push({
+                        data:doc.data(),
+                        id:doc.id
+                    });
+                });
+                resolve(data)
+            }).catch(function(error){
+                reject(error);
+            })
+        })
+    },
+    
+    
 };
