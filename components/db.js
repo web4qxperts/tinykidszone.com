@@ -64,6 +64,36 @@ export default {
             })
         })
     },
-    
-    
+    getDragDrop:function() {
+        return new Promise((resolve, reject) => {
+            const data = [];
+            db.collection("dragdrop").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    data.push({
+                        data:doc.data(),
+                        id:doc.id
+                    });
+                });
+                resolve(data)
+            }).catch(function(error){
+                reject(error);
+            })
+        })
+    },
+    getPuzzles:function() {
+        return new Promise((resolve, reject) => {
+            const data = [];
+            db.collection("puzzles").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    data.push({
+                        data:doc.data(),
+                        id:doc.id
+                    });
+                });
+                resolve(data)
+            }).catch(function(error){
+                reject(error);
+            })
+        })
+    },
 };
