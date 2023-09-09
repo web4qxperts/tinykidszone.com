@@ -96,6 +96,26 @@ export default {
             })
         })
     },
+    getMatchingActivities:function() {
+        return new Promise((resolve, reject) => {
+            const data = [];
+            db.collection("puzzles").where("status", "==", "1").where("type", "==", "2").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const nextData = doc.data();
+                    nextData["image"] = "/games/puzzles/"+nextData.id+".png"
+                    
+                    data.push({
+                        data:nextData,
+                        id:doc.id
+                    });
+                });
+                resolve(data)
+            }).catch(function(error){
+                reject(error);
+            })
+        })
+    },
+    
     getTapPuzzle:function() {
         return new Promise((resolve, reject) => {
             const data = [];
