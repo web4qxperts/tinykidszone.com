@@ -1,6 +1,6 @@
-import Head from "next/head";
-import db from "../../components/db";
 import React from 'react';
+import db from "../../components/db";
+import {GameHead} from "../../components/helpers";
 
 let host = "", post = "";
 let $;
@@ -476,11 +476,12 @@ const fetchData = function(data, callback) {
 }
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       width: 0,
-      data:[],
+      data:shuffle(props.data),
+      localData:[],
       index:null,
       colorArray:[],
       color:null,
@@ -493,31 +494,7 @@ class App extends React.Component {
     // post = document.body.getAttribute("data-post");
   
   }
-  componentDidMount() {
-    let self = this;
-    // fetchData({
-    //   method:"getGames",
-    //   type:"matchingPuzzles"
-    // }, function(data){
-
-      
-
-    //   self.setState({
-    //     data:shuffle(data),
-    //     localData:[],
-    //     //index:0
-    //   })
-    // })
-
-    db.getMatchingActivities().then(function(data){
-      console.log(data);
-      self.setState({
-        data:shuffle(data),
-        localData:[]
-      })
-    })
-    
-  }
+  
   playItem (index) {
     this.setState({
       index
@@ -531,6 +508,7 @@ class App extends React.Component {
   }
   render() {
     let self = this;
+    let {page} = self.props;
     let html = "";
     if(!self.state.data.length) {
       html = <div>Loading</div>
@@ -574,15 +552,23 @@ class App extends React.Component {
     
 
     return <div id="root">
-    <Head>
-       <title>Ravi</title>
-       <link href="/css/game.css" rel="stylesheet"/>
-       <link href="/css/matching-activities.css" rel="stylesheet"/>
-   </Head>
+    <GameHead data={page} />
    {html}
  </div>
    }
 }
 
+export async function getStaticProps() {
+  const page = await db.getGames("matching-activities");
+  const data = await db.getMatchingActivities();
+  return {
+    props: {
+      page:page[0].data,
+      data
+    }
+  }
+}
 
 export default App;
+
+

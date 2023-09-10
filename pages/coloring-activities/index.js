@@ -1,6 +1,6 @@
-import Head from "next/head";
-import db from "../../components/db";
 import React from 'react';
+import db from "../../components/db";
+import {GameHead} from "../../components/helpers";
 let host, post;
 
 const getAppData = function(key, data) {
@@ -268,11 +268,11 @@ class Game extends React.Component {
 }
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       width: 0,
-      data:[],
+      data:props.data,
       localData:[],
       index:null,
       colorArray:[],
@@ -291,19 +291,17 @@ class App extends React.Component {
   
   componentDidMount() {
     let self = this;
-    db.getColoringActivities().then(function(data){
-       self.setState({
-        data,
-        localData:localData()
-       }, function(){
-                let hash = window.location.hash.replace("#", "");
-        self.hashChange(hash);
-        window.addEventListener("hashchange", function(){
-          let hash = window.location.hash.replace("#", "");
-          self.hashChange(hash);
-        }, false); 
-       })
-    })
+    self.setState({
+        
+      localData:localData()
+     })
+
+     let hash = window.location.hash.replace("#", "");
+     self.hashChange(hash);
+     window.addEventListener("hashchange", function(){
+       let hash = window.location.hash.replace("#", "");
+       self.hashChange(hash);
+     }, false); 
     
   }
   
@@ -342,6 +340,7 @@ class App extends React.Component {
   
   render() {
     let self = this;
+    const {page} = self.props;
     let html =  <div className="scrolling-area">
     <div className="items-list coloring-activities">
     <h1><a href="https://tinykidszone.com/"><img src="https://tinykidszone.com/images/tkz-logo.png" alt="Tiny Kids Zone" /></a></h1>
@@ -392,15 +391,22 @@ class App extends React.Component {
     }
 
     return <div id="root">
-        <Head>
-            <title>Ravi</title>
-            <link href="/css/game.css" rel="stylesheet"/>
-            <link href="/css/coloring-activities.css" rel="stylesheet"/>
-        </Head>
+         <GameHead data={page} />
         {html}
     </div>
     
   }
 }
 
+
+export async function getStaticProps() {
+  const page = await db.getGames("coloring-activities");
+  const data = await db.getColoringActivities();
+  return {
+    props: {
+      page:page[0].data,
+      data
+    }
+  }
+}
 export default App;

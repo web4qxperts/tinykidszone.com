@@ -1,6 +1,6 @@
-import Head from "next/head";
-import db from "../../components/db";
 import React from 'react';
+import db from "../../components/db";
+import {GameHead} from "../../components/helpers";
 
 let host = "", post = "";
 const shuffle = function(data) {
@@ -35,29 +35,6 @@ const getAppData = function(key, data) {
   }
 }
 
-const fetchData = function(data, callback) {
-  let haveData = getAppData(data);
-  if(haveData) {
-    callback(haveData);
-  }
-  fetch(post + "games.php", {
-    method: 'POST', // or 'PUT'
-    headers: {
-    'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json())
-  .then(responseData => {
-    getAppData(data, responseData);
-    if(!haveData) {
-      callback(responseData);  
-    }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-}
 
 const createData = function() {
   let size = 16;
@@ -85,6 +62,8 @@ const createData = function() {
     image:""
   }
 }
+
+
 
 class Game extends React.Component {
   constructor(props) {
@@ -180,6 +159,10 @@ class Game extends React.Component {
 
 
 const getSetData = function(data) {
+  const isServer = typeof window === 'undefined';
+  if(isServer) {
+    return {activeIndex:0, submit:0, data:{}};
+  }
   if(data) {
     localStorage.setItem("tappuzzle", JSON.stringify(data))
   }
@@ -196,11 +179,13 @@ const getSetData = function(data) {
 }
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       width: 0,
-      data:[],
+      data:shuffle(props.data),
+      page:props.page,
+      localData:getSetData().data,
       index:null,
       popup:false,
       score:null,
@@ -210,49 +195,20 @@ class App extends React.Component {
     this.widthLoad = this.widthLoad.bind(this);
     this.next = this.next.bind(this);
     this.hashChange = this.hashChange.bind(this);
-    
-
-    // host = document.body.getAttribute("data-host");
-    // post = document.body.getAttribute("data-post");
   }
    componentDidMount() {
     let self = this;
-    // fetchData({
-    //   method:"getGames",
-    //   type:"tappuzzle"
-    // }, function(data){
-    //   self.setState({
-    //     data:shuffle(data),
-    //     localData:getSetData().data
-    //   }, function(){
-    //     window.addEventListener('resize', this.widthLoad);   
-        
-    //     let hash = window.location.hash.replace("#", "");
-    //     self.hashChange(hash);
-    //     window.addEventListener("hashchange", function(){
-    //       let hash = window.location.hash.replace("#", "");
-    //       self.hashChange(hash);
-    //     }, false); 
-    //   })
-    // })
-
-    db.getTapPuzzle().then(function(data){
-              self.setState({
-        data:shuffle(data),
-        localData:getSetData().data
-      }, function(){
-        window.addEventListener('resize', this.widthLoad);   
-        
-        let hash = window.location.hash.replace("#", "");
-        self.hashChange(hash);
-        window.addEventListener("hashchange", function(){
-          let hash = window.location.hash.replace("#", "");
-          self.hashChange(hash);
-        }, false); 
-      })
+    self.setState({
+      localData:getSetData().data,
     })
- 
-
+    window.addEventListener('resize', this.widthLoad);   
+        
+    let hash = window.location.hash.replace("#", "");
+    self.hashChange(hash);
+    window.addEventListener("hashchange", function(){
+      let hash = window.location.hash.replace("#", "");
+      self.hashChange(hash);
+    }, false);
   }
   widthLoad() {
     let obj = document.querySelector(".puzzle-game");
@@ -333,6 +289,7 @@ class App extends React.Component {
   }
   render() {
     let self = this;
+    let {page} = self.state;
     let html = "";
     if(!self.state.data.length) {
         html = <div>loading</div>
@@ -398,15 +355,20 @@ class App extends React.Component {
     }
 
   return  <div id="root">
-  <Head>
-     <title>Ravi</title>
-     <link href="/css/game.css" rel="stylesheet"/>
-     <link href="/css/memory-activities.css" rel="stylesheet"/>
- </Head>
+    <GameHead data={page} />
  {html}
  </div>
   }
 }
-
+export async function getStaticProps() {
+  const page = await db.getGames("memory-activities");
+  const data = await db.getTapPuzzle();
+  return {
+    props: {
+      page:page[0].data,
+      data
+    }
+  }
+}
 
 export default App;

@@ -1,6 +1,7 @@
-import Head from "next/head";
-import db from "../../components/db";
 import React from 'react';
+import db from "../../components/db";
+import {GameHead} from "../../components/helpers";
+
 
 let post;
 
@@ -49,31 +50,14 @@ const fetchData = function(data, callback) {
 }
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {     
-      data:[]
+      page:props.page,
+      data:props.data
     }
-    //post = document.body.getAttribute("data-post");
   }
   
-  componentWillMount() {
-    let self = this;
-    // fetchData({
-    //   method:"getGames",
-    //   type:"animalssounds"
-    // }, function(data){
-    //   self.setState({
-    //     data
-    //   })
-    // })
-    db.getAnimalsSounds().then(function(data){
-            self.setState({
-        data
-      })
-    })
-  }
-
   playAudio(event){
     var thisApp = event.currentTarget;
     var playIcon = thisApp.querySelector(".material-icons")
@@ -94,13 +78,10 @@ class App extends React.Component {
   
   render() {
     let self = this;
+    let {page} = self.state;
     return <div id="root">
         <div className="animals-sounds">
-         <Head>
-            <title>Ravi</title>
-            <link href="/css/game.css" rel="stylesheet"/>
-            <link href="/css/animal-sounds.css" rel="stylesheet"/>
-        </Head>
+         <GameHead data={page} />
     <header>
     <h1><a href="https://tinykidszone.com/"><img src="https://tinykidszone.com/images/tkz-logo.png" alt="Tiny Kids Zone" /></a></h1>
     <h2>Animal Sounds and Activities</h2>
@@ -121,4 +102,17 @@ class App extends React.Component {
   }
 }
 
+export async function getStaticProps() {
+  const page = await db.getGames("animal-sounds");
+  const data = await db.getAnimalsSounds();
+  return {
+    props: {
+      page:page[0].data,
+      data
+    }
+  }
+}
+
 export default App;
+
+

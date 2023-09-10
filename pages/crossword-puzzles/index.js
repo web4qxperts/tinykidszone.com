@@ -1,6 +1,6 @@
-import Head from "next/head";
-import db from "../../components/db";
 import React from 'react';
+import db from "../../components/db";
+import {GameHead} from "../../components/helpers";
 
 
 let host = "", post = "";
@@ -247,11 +247,12 @@ const fetchData = function(data, callback) {
 }
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       width: 0,
-      data:[],
+      data:shuffle(props.data),
+      localData:[],
       index:null,
       colorArray:[],
       color:null,
@@ -279,15 +280,7 @@ class App extends React.Component {
     // })
 
 
-    db.getPuzzles().then(function(data){
-      console.log(data);
-          self.setState({
-        data:shuffle(data),
-        localData:[],
-        //index:0
-      })  
-    })
-    
+   
   }
   playItem (index) {
     this.setState({
@@ -303,6 +296,7 @@ class App extends React.Component {
   render() {
     let self = this;
     let html = "";
+    const {page} = self.props;
     if(!self.state.data.length) {
       html = <div>Loading</div>
     }
@@ -343,15 +337,20 @@ class App extends React.Component {
     
 
     return <div id="root">
-    <Head>
-       <title>Ravi</title>
-       <link href="/css/game.css" rel="stylesheet"/>
-       <link href="/css/crossword-puzzles.css" rel="stylesheet"/>
-   </Head>
+     <GameHead data={page} />
    {html}
  </div>
    }
 }
 
-
+export async function getStaticProps() {
+  const page = await db.getGames("crossword-puzzles");
+  const data = await db.getPuzzles();
+  return {
+    props: {
+      page:page[0].data,
+      data
+    }
+  }
+}
 export default App;

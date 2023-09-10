@@ -52,7 +52,6 @@ html, body, #root,#__next, .animals-sounds {
 	width:100%;
 	height: calc(100% - 90px);
 	overflow-y: auto;
-	margin: 100px 0 0 0;
 }
 	
 .list ul {

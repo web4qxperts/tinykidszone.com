@@ -1,6 +1,6 @@
-import Head from "next/head";
-import db from "../../components/db";
 import React from 'react';
+import db from "../../components/db";
+import {GameHead} from "../../components/helpers";
 
 let host = "", post = "";
 const shuffle = function(data) {
@@ -366,11 +366,12 @@ class Game extends React.Component {
 
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       width: 0,
-      data:[],
+      data:shuffle(props.data),
+      localData:[],
       index:null,
       id:null,
       activeData:null,
@@ -404,16 +405,9 @@ class App extends React.Component {
     //     self.hashChange(hash);
     //   })      
     // })
-    db.getDragDrop().then(function(data){
-      self.setState({
-                data:shuffle(data),
-        localData:[],
-        //index:0
-      }, function(){
-        let hash = window.location.hash.replace("#", "");
-        self.hashChange(hash);  
-      })
-    })
+   
+    let hash = window.location.hash.replace("#", "");
+    self.hashChange(hash);  
     window.addEventListener("hashchange", function(){
       let hash = window.location.hash.replace("#", "");
       self.hashChange(hash);
@@ -448,6 +442,7 @@ class App extends React.Component {
   }
   render() {
     let self = this;
+    let {page} = self.props;
     if(!self.state.data.length) {
       return <div>Loading</div>
     }
@@ -487,14 +482,20 @@ class App extends React.Component {
      
 
     return <div id="root">
-         <Head>
-            <title>Ravi</title>
-            <link href="/css/game.css" rel="stylesheet"/>
-            <link href="/css/drag-and-drop-activities.css" rel="stylesheet"/>
-        </Head>
+         <GameHead data={page} />
         {html}
       </div>
    }
 }
 
+export async function getStaticProps() {
+  const page = await db.getGames("drag-and-drop-activities");
+  const data = await db.getDragDrop();
+  return {
+    props: {
+      page:page[0].data,
+      data
+    }
+  }
+}
 export default App;

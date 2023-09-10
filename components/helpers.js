@@ -1,0 +1,27 @@
+import Head from "next/head";
+
+export const GameHead = function ({data}) {
+    if(data) {
+        return <Head>
+        <title>{data.metaTitle}</title>
+        <link rel="canonical" href={`https://www.tinykidszone.com/${data.slug}`}/>
+        <meta name="description" content={data.metaDescription} />
+        <meta name="keywords" content={data.metaKeywords} />
+        <meta property="og:title" content={data.metaTitle} />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:site_name" content={data.title} />
+        <meta property="og:description" content={data.metaDescription} />
+        <meta property="og:url" content={`https://www.tinykidszone.com/${data.slug}`} />
+        <meta property="og:image" content={`https://www.tinykidszone.com/games/icons/${data.slug}.png`}/>
+        <meta property="og:image:secure_url" content={`https://www.tinykidszone.com/games/icons/${data.slug}.png`} />
+        <link href="/css/game.css" rel="stylesheet"/>
+        <link href={`/css/${data.slug}.css`} rel="stylesheet"/>
+        </Head>
+    }
+    return <Head>
+    <title>404 - Page not found</title>
+    <link href="/css/game.css" rel="stylesheet"/>
+    </Head>
+   
+}

@@ -16,10 +16,14 @@ const db = firebase.firestore();
 
 
 export default {
-    getGames:function() {
+    getGames:function(slug) {
         return new Promise((resolve, reject) => {
             const data = [];
-            db.collection("games").get().then((querySnapshot) => {
+            let docRef = db.collection("games");
+            if(slug) {
+                docRef = db.collection("games").where("slug", "==", slug)
+            }
+            docRef.get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     data.push({
                         data:doc.data(),
@@ -31,6 +35,8 @@ export default {
                 reject(error);
             })
         })
+
+        
     },
     getColoringActivities:function() {
         return new Promise((resolve, reject) => {
