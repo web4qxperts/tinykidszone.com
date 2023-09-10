@@ -4,6 +4,7 @@ export const GameHead = function ({data}) {
     if(data) {
         return <Head>
         <title>{data.metaTitle}</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="canonical" href={`https://www.tinykidszone.com/${data.slug}`}/>
         <meta name="description" content={data.metaDescription} />
         <meta name="keywords" content={data.metaKeywords} />
@@ -47,6 +48,7 @@ export const PageHead = function ({slug}) {
     const data = pages[slug];
     return <Head>
     <title>{data.metaTitle}</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="canonical" href={`https://www.tinykidszone.com/${data.slug}`}/>
     <meta name="description" content={data.metaDescription} />
     <meta name="keywords" content={data.metaKeywords} />
