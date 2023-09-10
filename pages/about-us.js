@@ -1,7 +1,7 @@
 import Wrapper from "../components/wrapper";
 
 export default function AboutUs() {
-    return <Wrapper>
+    return <Wrapper slug={"about-us"}>
     
     
 <main>

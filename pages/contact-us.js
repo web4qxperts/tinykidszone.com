@@ -1,7 +1,7 @@
 import Wrapper from "../components/wrapper";
 
 export default function ContactUs() {
-    return <Wrapper>
+    return <Wrapper slug={"contact-us"}>
     <main>
     <div id="main" className="container">
     

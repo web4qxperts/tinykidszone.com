@@ -1,11 +1,10 @@
-import Head from "next/head";
+import {PageHead} from "./helpers";
+
 import Link from "next/link";
 
 export default function Wrapper(props) {
     return <div id="root">
-        <Head>
-        <link href="/css/main.css" rel="stylesheet" />
-        </Head>
+        <PageHead slug={props.slug} />
     <header>
     <div className="logo animate__animated animate__swing animate__delay-2s"><Link href="/"><img src="/images/tkz-logo.png" /></Link></div>
     

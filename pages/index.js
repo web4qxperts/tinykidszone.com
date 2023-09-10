@@ -3,7 +3,7 @@ import Wrapper from "../components/wrapper";
 import db from "../components/db";
 
 export default function Home({data}) {
-    return  <Wrapper>
+    return  <Wrapper slug={"home"}>
                 
             <main>
             <div id="main" className="container">
