@@ -41,7 +41,7 @@ export default {
     getColoringActivities:function() {
         return new Promise((resolve, reject) => {
             const data = [];
-            db.collection("coloringactivity").get().then((querySnapshot) => {
+            db.collection("coloringactivity").where("status", "==", "1").get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     data.push({
                         data:doc.data(),

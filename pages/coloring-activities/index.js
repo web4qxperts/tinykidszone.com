@@ -294,14 +294,16 @@ class App extends React.Component {
     self.setState({
         
       localData:localData()
+     }, function(){
+      let hash = window.location.hash.replace("#", "");
+      self.hashChange(hash);
+      window.addEventListener("hashchange", function(){
+        let hash = window.location.hash.replace("#", "");
+        self.hashChange(hash);
+      }, false); 
      })
 
-     let hash = window.location.hash.replace("#", "");
-     self.hashChange(hash);
-     window.addEventListener("hashchange", function(){
-       let hash = window.location.hash.replace("#", "");
-       self.hashChange(hash);
-     }, false); 
+    
     
   }
   
