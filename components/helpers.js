@@ -56,8 +56,8 @@ export const PageHead = function ({slug}) {
     <meta property="og:site_name" content={"Tiny Kids Zone"} />
     <meta property="og:description" content={data.metaDescription} />
     <meta property="og:url" content={`https://www.tinykidszone.com/${data.slug}`} />
-    <meta property="og:image" content={`https://www.tinykidszone.com/icon-192x192.png`}/>
-    <meta property="og:image:secure_url" content={`https://www.tinykidszone.com/icon-192x192.png`} />
+    <meta property="og:image" content={`https://www.tinykidszone.com/icons-512.png`}/>
+    <meta property="og:image:secure_url" content={`https://www.tinykidszone.com/icons-512.png`} />
     <link href="/css/main.css" rel="stylesheet"/>
     </Head>
 }
