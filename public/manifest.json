@@ -14,6 +14,9 @@
             "sizes": "512x512"
         }
     ],
-    "start_url":"/",
-    "background_color":"#3367D6"
+    "start_url": "https://tinykidszone.com/",
+    "id": "https://tinykidszone.com/",
+    "display": "standalone",
+    "background_color": "#3367D6",
+    "theme_color":"#FFFFFF"
 }
